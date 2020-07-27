@@ -113,7 +113,7 @@ export default {
       }
 
       const timesMark = {
-        '7/27': '',
+        '7/27': '3:11',
         '7/26': '',
         '7/25': '4:11',
         '7/24': '0:53',
@@ -127,7 +127,21 @@ export default {
       }
 
       const timesNick = {
-        '7/27': '',
+        '7/27': '9:01',
+        '7/26': '',
+        '7/25': '',
+        '7/24': '',
+        '7/23': '',
+        '7/22': '',
+        '7/21': '',
+        '7/20': '',
+        '7/19': '',
+        '7/18': '',
+        '7/17': '',
+      }
+
+      const timesSteve = {
+        '7/27': '6:00',
         '7/26': '',
         '7/25': '',
         '7/24': '',
@@ -175,6 +189,11 @@ export default {
           name: 'nick',
           times: timesNick,
           average: this.getAverage(timesNick),
+        },
+        {
+          name: 'steve',
+          times: timesSteve,
+          average: this.getAverage(timesSteve),
         },
       ];
 
