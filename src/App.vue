@@ -43,7 +43,7 @@ export default {
     },
     boys() {
       const timesBrian = {
-        '7/27': '',
+        '7/27': '4:05',
         '7/26': '',
         '7/25': '9:04',
         '7/24': '00:48',
@@ -85,7 +85,7 @@ export default {
       }
 
       const timesDylan = {
-        '7/27': '',
+        '7/27': '4:09',
         '7/26': '',
         '7/25': '8:37',
         '7/24': '3:50',
@@ -126,6 +126,20 @@ export default {
         '7/17': '',
       }
 
+      const timesNick = {
+        '7/27': '',
+        '7/26': '',
+        '7/25': '',
+        '7/24': '',
+        '7/23': '',
+        '7/22': '',
+        '7/21': '',
+        '7/20': '',
+        '7/19': '',
+        '7/18': '',
+        '7/17': '',
+      }
+
       const boys = [
         {
           name: 'joseph',
@@ -156,6 +170,11 @@ export default {
           name: 'mark',
           times: timesMark,
           average: this.getAverage(timesMark),
+        },
+        {
+          name: 'nick',
+          times: timesNick,
+          average: this.getAverage(timesNick),
         },
       ];
 
