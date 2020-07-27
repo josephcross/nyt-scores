@@ -248,7 +248,12 @@ export default {
       }
 
       const mins = Math.floor(seconds / 60)
-      const secs = seconds % 60 === 0 ? '00' : seconds % 60;
+      let secs = seconds % 60;
+
+      if ( secs < 10 ) {
+        secs = '0' + secs;
+      }
+
       return `${mins}:${secs}`;
     }
   },
