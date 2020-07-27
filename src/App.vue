@@ -150,7 +150,7 @@ export default {
         {
           name: 'brent',
           times: timesBrent,
-          average: this.getAverage(timesDylan),
+          average: this.getAverage(timesBrent),
         },
         {
           name: 'mark',
