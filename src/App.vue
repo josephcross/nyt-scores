@@ -1,7 +1,10 @@
 <template>
     <div class="app" id="app">
         <div class="y-axis">
-            <div v-for="(boy, i) in boys" :key="`th-${i}`">{{ boy.name }}<br>{{ boy.average }}</div>
+            <div v-for="(boy, i) in boys" :key="`th-${i}`">
+                <svg v-if="i === 0" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="crown" class="svg-inline--fa fa-crown fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.4 7.7-.8L128 416h384l72.3-192.8c2.5.4 5.1.8 7.7.8 26.5 0 48-21.5 48-48s-21.5-48-48-48z"></path></svg>
+                {{ boy.name }}<br>{{ boy.average }}
+            </div>
         </div>
         <div class="table-wrap">
             <table>
@@ -12,7 +15,10 @@
                 </thead>
                 <tbody>
                     <tr v-for="(boy, bi) in boys" :key="`boy-row-${bi}`">
-                        <td v-for="(day, i) in days" :key="`time-${i}-${bi}`">{{ getTime(day, bi) }}</td>
+                        <td v-for="(day, i) in days" :key="`time-${i}-${bi}`" class="time">
+                            {{ getTime(day, bi) }}
+                            <svg v-if="isFastest(day, getTime(day, bi))" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="medal" class="svg-inline--fa fa-medal fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M223.75 130.75L154.62 15.54A31.997 31.997 0 0 0 127.18 0H16.03C3.08 0-4.5 14.57 2.92 25.18l111.27 158.96c29.72-27.77 67.52-46.83 109.56-53.39zM495.97 0H384.82c-11.24 0-21.66 5.9-27.44 15.54l-69.13 115.21c42.04 6.56 79.84 25.62 109.56 53.38L509.08 25.18C516.5 14.57 508.92 0 495.97 0zM256 160c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm92.52 157.26l-37.93 36.96 8.97 52.22c1.6 9.36-8.26 16.51-16.65 12.09L256 393.88l-46.9 24.65c-8.4 4.45-18.25-2.74-16.65-12.09l8.97-52.22-37.93-36.96c-6.82-6.64-3.05-18.23 6.35-19.59l52.43-7.64 23.43-47.52c2.11-4.28 6.19-6.39 10.28-6.39 4.11 0 8.22 2.14 10.33 6.39l23.43 47.52 52.43 7.64c9.4 1.36 13.17 12.95 6.35 19.59z"></path></svg>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -43,11 +49,12 @@ export default {
     },
     boys() {
       const timesBrian = {
+        '7/29': '3:38',
         '7/28': '2:09',
         '7/27': '4:05',
         '7/26': '',
         '7/25': '9:04',
-        '7/24': '00:48',
+        '7/24': '0:48',
         '7/23': '8:05',
         '7/22': '8:30',
         '7/21': '1:01',
@@ -58,6 +65,7 @@ export default {
       };
 
       const timesJoseph = {
+        '7/29': '0:58',
         '7/28': '0:54',
         '7/27': '6:04',
         '7/26': '',
@@ -73,6 +81,7 @@ export default {
       };
 
       const timesJosh = {
+        '7/29': '1:53',
         '7/28': '1:23',
         '7/27': '2:29',
         '7/26': '',
@@ -88,6 +97,7 @@ export default {
       }
 
       const timesDylan = {
+        '7/29': '',
         '7/28': '2:13',
         '7/27': '4:09',
         '7/26': '',
@@ -103,6 +113,7 @@ export default {
       }
 
       const timesBrent = {
+        '7/29': '',
         '7/28': '2:49',
         '7/27': '2:25',
         '7/26': '',
@@ -118,6 +129,7 @@ export default {
       }
 
       const timesMark = {
+        '7/29': '',
         '7/28': '3:41',
         '7/27': '3:11',
         '7/26': '',
@@ -133,6 +145,7 @@ export default {
       }
 
       const timesNick = {
+        '7/29': '',
         '7/28': '0:50',
         '7/27': '9:01',
         '7/26': '',
@@ -148,6 +161,7 @@ export default {
       }
 
       const timesSteve = {
+        '7/29': '',
         '7/28': '3:58',
         '7/27': '6:00',
         '7/26': '',
@@ -263,7 +277,24 @@ export default {
       }
 
       return `${mins}:${secs}`;
-    }
+    },
+    isFastest(day, time) {
+      const date = day.split(' ')[1];
+      let fastest = true;
+
+      if ( time === '-' ) {
+        return false;
+      }
+
+      for (var i = 0; i < this.boys.length; i++) {
+        const thisBoysTime = this.toSeconds(this.boys[i].times[date]);
+        if ( thisBoysTime < this.toSeconds(time) ) {
+          fastest = false;
+        }
+      }
+
+      return fastest;
+    },
   },
 }
 </script>
@@ -299,6 +330,7 @@ $cell-width: 70px;
     overflow-x: auto;
     padding-left: $cell-width;
     position: relative;
+    background: #fdfbfb;
 
     tr,
     thead {
@@ -318,8 +350,8 @@ $cell-width: 70px;
 
     th {
         flex: 0 0 $cell-width;
-        border-left: 1px solid #fff;
-        border-right: 1px solid #fff;
+        border-left: 1px solid transparent;
+        border-right: 1px solid transparent;
 
         div {
             max-width: 40px;
@@ -328,6 +360,7 @@ $cell-width: 70px;
 
     td {
         border: 1px solid #fafafa;
+        background: #fff;
     }
 
     .y-axis {
@@ -349,14 +382,35 @@ $cell-width: 70px;
             font-weight: bold;
             color: #fff;
             background: #000;
-            border-top: 1px solid rgba( #fff, .3);
+            border-top: 2px solid rgba( #fff, .3);
             font-size: 14px;
+            position: relative;
+
+            svg {
+                position: absolute;
+                width: 16px;
+                top: 5px;
+                right: 5px;
+                color: gold;
+            }
 
             &:first-child {
-                background: #907c0f;
                 border: 0;
             }
         }
+    }
+
+    .time {
+        position: relative;
+    }
+
+    .time svg {
+        top: -1px;
+        right: 5px;
+        color: #2584ea;
+        width: 15px;
+        position: absolute;
+        z-index: 3;
     }
 }
 
