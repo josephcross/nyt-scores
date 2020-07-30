@@ -359,11 +359,17 @@ $cell-width: 70px;
 
     th {
         flex: 0 0 $cell-width;
-        border-left: 1px solid transparent;
-        border-right: 1px solid transparent;
+        border: 0;
+        box-shadow: inset 0 0 3px -1px #00000021;
+        border: 0;
+        width: 72px;
+        flex: 0 0 72px;
 
         div {
             max-width: 40px;
+            font-size: 12px;
+            line-height: 1.7;
+            padding-top: 3px;
         }
     }
 
