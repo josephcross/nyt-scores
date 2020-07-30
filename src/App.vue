@@ -452,7 +452,7 @@ $cell-width: 70px;
         position: relative;
 
         &.slowest {
-            // background: rgba(247, 226, 226, 0.2);
+            background: #fbf6f6;
             border-color: transparent;
         }
     }
