@@ -161,6 +161,7 @@ export default {
       }
 
       const timesNick = {
+        '7/31': '',
         '7/30': '2:13',
         '7/29': '',
         '7/28': '0:50',
@@ -304,7 +305,7 @@ export default {
       const date = day.split(' ')[1];
       let fastest = true;
 
-      if ( time === '-' ) {
+      if ( time === '-' || !time ) {
         return false;
       }
 
