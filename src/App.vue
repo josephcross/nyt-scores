@@ -43,7 +43,7 @@ export default {
   computed: {
     days() {
       const days = [];
-      const daysBack = moment( '20200717', "YYYYMMDD").fromNow().split(' ')[0];
+      const daysBack = moment().diff( '2020-07-17', 'days' );
 
       for (var i = 0; i < daysBack; i++) {
         days.push( moment().subtract(i, 'days').format('ddd M/D') );
