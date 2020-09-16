@@ -7,7 +7,7 @@
             </div>
             <div>
                 <h2>{{ name }}</h2>
-                <small>0:30</small>
+                <small>{{ getAverage(myTimes) }}</small>
             </div>
         </div>
 
@@ -37,7 +37,9 @@
                 </tr>
             </table>
         </div>
-
+        <div class="profile-chart">
+            todo: average time line chart
+        </div>
     </div>
 </template>
 
@@ -146,5 +148,12 @@ export default {
             text-align: right;
             padding-right: 15px;
         }
+    }
+
+    .profile-chart {
+        margin-top: 30px;
+        text-align: center;
+        padding: 40px;
+        background: #f3f0f0;
     }
 </style>

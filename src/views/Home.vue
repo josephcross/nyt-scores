@@ -84,20 +84,6 @@ export default {
             const date = day.split(' ')[1];
             return this.boys[boyIndex].times[date] ? this.boys[boyIndex].times[date] : '-';
         },
-        getAverage(times) {
-            let count = 0;
-            let totalSeconds = 0;
-
-            // eslint-disable-next-line no-unused-vars
-            for (const [key, value] of Object.entries(times)) {
-                if ( value ) {
-                    totalSeconds += this.toSeconds(value);
-                    count += 1;
-                }
-            }
-
-            return this.toMinutes(Math.floor(totalSeconds / count));
-        },
         isFastest(day, time) {
             const date = day.split(' ')[1];
             let fastest = true;
