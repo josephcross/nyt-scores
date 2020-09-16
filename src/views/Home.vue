@@ -138,7 +138,7 @@ export default {
 
 <style lang="scss">
 
-table {
+.home table {
     table-layout: fixed;
     border-spacing: 0;
     border-collapse: collapse;
@@ -150,7 +150,7 @@ table {
 
 $cell-width: 70px;
 
-.app {
+.home {
     display: flex;
     overflow-x: auto;
     padding-left: $cell-width;
