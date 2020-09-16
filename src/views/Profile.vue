@@ -134,6 +134,7 @@ export default {
 
     .profile-stats {
         display: flex;
+        justify-content: space-between;
         max-width: 400px;
 
         table {
