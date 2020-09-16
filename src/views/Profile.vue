@@ -7,7 +7,7 @@
             </div>
             <div>
                 <h2>{{ name }}</h2>
-                <small>{{ getAverage(myTimes) }}</small>
+                <small>puzzles done: {{ puzzlesDone }}</small>
             </div>
         </div>
 
@@ -27,6 +27,10 @@
                 </tr>
             </table>
             <table>
+                <tr>
+                    <th>Average</th>
+                    <td>{{ getAverage(myTimes) }}</td>
+                </tr>
                 <tr>
                     <th>Fastest</th>
                     <td>{{ fastestTime}}</td>
@@ -58,6 +62,17 @@ export default {
     computed: {
         myTimes() {
             return this.$store.state.times[this.name];
+        },
+        puzzlesDone() {
+            let count = 0;
+
+            _.forEach( this.myTimes, (time) => {
+                if ( time ) {
+                    count +=1;
+                }
+            });
+
+            return count;
         },
         timesAll() {
             return this.$store.state.times;
