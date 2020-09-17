@@ -1,9 +1,12 @@
 <template>
     <div class="profile">
-        <router-link :to="{ name: 'Home' }" class="profile-back">Back</router-link>
+        <div class="profile-back">
+            <router-link :to="{ name: 'Home' }" class="profile-back">Back</router-link>
+        </div>
         <div class="profile-header">
             <div class="avi">
-
+                <!-- <img src="../assets/avi-brian.jpg"> -->
+                <img :src="require(`../assets/avi-${name}.jpg`)">
             </div>
             <div>
                 <h2>{{ name }}</h2>
@@ -41,19 +44,19 @@
                 </tr>
             </table>
         </div>
-        <div class="profile-chart">
-            todo: average time line chart
-        </div>
+        <AvgChart :chart-data="chartData"></AvgChart>
     </div>
 </template>
 
 <script>
 import _ from 'lodash';
 import helpers from '../components/mixins/helpers';
+import AvgChart from '../components/AvgChart';
 
 export default {
     name: 'Profile',
     mixins: [helpers],
+    components: { AvgChart },
     data() {
         return {
             name: this.$route.params.boy,
@@ -108,68 +111,99 @@ export default {
         nLast() {
             return 'todo';
         },
-    },
-    methods: {
-        toSeconds(time) {
-            const mins = Number(time.split(':')[0]) * 60;
-            const seconds = Number(time.split(':')[1]);
+        myAverages() {
+            const averages = [];
+            const times = _.clone(this.myTimes);
 
-            return mins + seconds;
+            _.forEach( this.chartDays, day => {
+                averages.push(this.getAverage(times, true));
+                delete times[day];
+            });
+
+            return averages.reverse();
         },
-    }
+        chartData() {
+            return {
+                labels: this.chartDays,
+                datasets: [
+                    {
+                        label: 'Average time (in seconds)',
+                        borderColor: '#7f87b2',
+                        fill: false,
+                        data: this.myAverages,
+                    }
+                ]
+            }
+        }
+    },
 }
 </script>
 
 <style lang="scss">
-    .profile {
-        padding: 1rem;
+.profile-back {
+    padding: 10px 1rem;
+    margin: 0 -1rem;
+}
+
+.profile {
+    padding: 0 1rem 1rem;
+    text-align: left;
+}
+
+.profile-header {
+    display: flex;
+    text-align: left;
+    margin: 0 0 30px;
+
+    .avi {
+        width: 100px;
+        height: 100px;
+        background: red;
+        margin-right: 20px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        box-shadow: 0 0 3px 2px rgba( #000, .03);
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    small {
+        font-size: 15px;
+    }
+
+    h2 {
+        margin: 0;
+    }
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: space-between;
+    max-width: 400px;
+    margin: 0 -1rem;
+    padding: 1rem;
+    background: #f5f6fa;
+
+    table {
+        flex: 0 0 50%;
+    }
+
+    td, {
         text-align: left;
     }
 
-    .profile-header {
-        display: flex;
-        text-align: left;
-        margin: 10px 0 30px;
-
-        .avi {
-            width: 100px;
-            height: 100px;
-            background: red;
-            margin-right: 20px;
-        }
-
-        small {
-            font-size: 15px;
-        }
-
-        h2 {
-            margin: 0;
-        }
+    th {
+        text-align: right;
+        padding-right: 15px;
     }
+}
 
-    .profile-stats {
-        display: flex;
-        justify-content: space-between;
-        max-width: 400px;
-
-        table {
-            flex: 0 0 50%;
-        }
-
-        td, {
-            text-align: left;
-        }
-
-        th {
-            text-align: right;
-            padding-right: 15px;
-        }
-    }
-
-    .profile-chart {
-        margin-top: 30px;
-        text-align: center;
-        padding: 40px;
-        background: #f3f0f0;
-    }
+.average-chart {
+    margin-top: 40px;
+}
 </style>
