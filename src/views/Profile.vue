@@ -5,7 +5,6 @@
         </div>
         <div class="profile-header">
             <div class="avi">
-                <!-- <img src="../assets/avi-brian.jpg"> -->
                 <img :src="require(`../assets/avi-${name}.jpg`)">
             </div>
             <div>

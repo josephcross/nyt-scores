@@ -5,6 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    colors: {
+      brian: '#7f87b2',
+      joseph: '#3da4ab',
+      josh: '#95dab6',
+      dylan: '#f2e6b1',
+      brent: '#dc8580',
+      mark: '#4a4e4d',
+      nick: '#f6cd61',
+      steve: '#fe603e',
+    },
     times: {
       brian: {
         '9/16': '1:14',
