@@ -30,8 +30,10 @@
             </div>
         </div>
         <div class="chart-wrap">
-            <h2>Past 10 days</h2>
+            <h2>Average (all-time)</h2>
             <AvgChart :chart-data="chartData"></AvgChart>
+            <h2>Puzzle times (past 10 days)</h2>
+            <AvgChart :chart-data="chartDataTimes"></AvgChart>
         </div>
     </div>
 </template>
@@ -92,10 +94,33 @@ export default {
 
             return data;
         },
+        datasetTimes() {
+            const data = [];
+
+
+            _.forEach( this.boys, boy => {
+                const obj = {
+                    label: boy.name,
+                    borderColor: this.colors[boy.name],
+                    pointRadius: 3,
+                    fill: false,
+                    data: this.getTimes(boy.times),
+                }
+                data.push(obj);
+            });
+
+            return data;
+        },
         chartData() {
             return {
-                labels: this.chartDays.slice(-10),
+                labels: this.chartDays,
                 datasets: this.datasets,
+            }
+        },
+        chartDataTimes() {
+            return {
+                labels: this.chartDays.slice(-10),
+                datasets: this.datasetTimes,
             }
         },
     },
@@ -143,13 +168,27 @@ export default {
         },
         getAverages(times) {
             const averages = [];
+            const timesClone = _.clone(times);
 
-            _.forEach( this.chartDays.slice(-10), day => {
-                averages.push(this.getAverage(times, true));
-                delete times[day];
+            _.forEach( this.chartDays, day => {
+                averages.push(this.getAverage(timesClone, true));
+                delete timesClone[day];
             });
 
             return averages.reverse();
+        },
+        getTimes(times) {
+            const points = [];
+
+            _.forEach( this.chartDays.slice(-10), day => {
+                if ( times[day] ) {
+                    points.push(this.toSeconds(times[day]));
+                } else {
+                    points.push(null);
+                }
+            });
+
+            return points;
         },
     },
 }
