@@ -11,14 +11,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/:boy',
+    path: '/boy/:boy',
     name: 'Profile',
     component: () => import('../views/Profile.vue')
   },
   {
-    path: '/overview',
-    name: 'Overview',
-    component: () => import('../views/Overview.vue')
+    path: '/charts',
+    name: 'Charts',
+    component: () => import('../views/Charts.vue')
   },
 ]
 

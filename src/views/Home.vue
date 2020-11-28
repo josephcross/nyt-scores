@@ -5,7 +5,7 @@
                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sync" class="svg-inline--fa fa-sync fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M440.65 12.57l4 82.77A247.16 247.16 0 0 0 255.83 8C134.73 8 33.91 94.92 12.29 209.82A12 12 0 0 0 24.09 224h49.05a12 12 0 0 0 11.67-9.26 175.91 175.91 0 0 1 317-56.94l-101.46-4.86a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12H500a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12h-47.37a12 12 0 0 0-11.98 12.57zM255.83 432a175.61 175.61 0 0 1-146-77.8l101.8 4.87a12 12 0 0 0 12.57-12v-47.4a12 12 0 0 0-12-12H12a12 12 0 0 0-12 12V500a12 12 0 0 0 12 12h47.35a12 12 0 0 0 12-12.6l-4.15-82.57A247.17 247.17 0 0 0 255.83 504c121.11 0 221.93-86.92 243.55-201.82a12 12 0 0 0-11.8-14.18h-49.05a12 12 0 0 0-11.67 9.26A175.86 175.86 0 0 1 255.83 432z"></path></svg>
             </button>
             <div class="y-axis">
-                <router-link v-for="(boy, i) in boys" :key="`th-${i}`" :to="{ path: `/${boy.name}` }">
+                <router-link v-for="(boy, i) in boys" :key="`th-${i}`" :to="{ path: `/boy/${boy.name}` }">
                     <svg v-if="i === 0" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="crown" class="svg-inline--fa fa-crown crown fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.4 7.7-.8L128 416h384l72.3-192.8c2.5.4 5.1.8 7.7.8 26.5 0 48-21.5 48-48s-21.5-48-48-48z"></path></svg>
                     <img v-if="i === boys.length - 1" class="dunce" src="../assets/dunce2.png" alt="">
                     {{ boy.name }}<br>{{ boy.average }}
@@ -29,55 +29,29 @@
                 </table>
             </div>
         </div>
+        <!-- <router-link :to="{ name: 'Charts' }" class="btn btn-charts">View Charts</router-link> -->
         <div class="chart-wrap">
             <h2>Average (all-time)</h2>
-            <AvgChart :chart-data="chartData"></AvgChart>
+            <AvgChart :chart-data="chartDataAvg"></AvgChart>
+            <!-- <h2>Average (past 30 days)</h2>
+            <AvgChart :chart-data="chartDataAvg30"></AvgChart> -->
             <h2>Puzzle times (past 10 days)</h2>
-            <AvgChart :chart-data="chartDataTimes"></AvgChart>
+            <AvgChart :chart-data="chartDataTimes10"></AvgChart>
         </div>
     </div>
 </template>
 
 <script>
-import _ from 'lodash';
 import helpers from '../components/mixins/helpers';
 import AvgChart from '../components/AvgChart';
+import _ from 'lodash';
 
 export default {
     name: 'Home',
     mixins: [helpers],
     components: { AvgChart },
     computed: {
-        times() {
-            return this.$store.state.times;
-        },
-        colors() {
-            return this.$store.state.colors;
-        },
-        boys() {
-            const boys = [];
-
-            for ( const [name, times] of Object.entries(this.times) ) {
-                boys.push({
-                    name,
-                    times,
-                    average: this.getAverage(times),
-                });
-            }
-
-            return boys.sort( (a,b) => {
-                if ( this.toSeconds(a.average) < this.toSeconds(b.average) ) {
-                    return -1;
-                }
-
-                if ( this.toSeconds(a.average) > this.toSeconds(b.average) ) {
-                    return 1;
-                }
-
-                return 0;
-            });
-        },
-        datasets() {
+        datasetsAvgAll() {
             const data = [];
 
 
@@ -94,9 +68,8 @@ export default {
 
             return data;
         },
-        datasetTimes() {
+        datasetTimes10() {
             const data = [];
-
 
             _.forEach( this.boys, boy => {
                 const obj = {
@@ -111,16 +84,16 @@ export default {
 
             return data;
         },
-        chartData() {
+        chartDataAvg() {
             return {
                 labels: this.chartDays,
-                datasets: this.datasets,
+                datasets: this.datasetsAvgAll,
             }
         },
-        chartDataTimes() {
+        chartDataTimes10() {
             return {
                 labels: this.chartDays.slice(-10),
-                datasets: this.datasetTimes,
+                datasets: this.datasetTimes10,
             }
         },
     },
@@ -165,30 +138,6 @@ export default {
             }
 
             return slowest;
-        },
-        getAverages(times) {
-            const averages = [];
-            const timesClone = _.clone(times);
-
-            _.forEach( this.chartDays, day => {
-                averages.push(this.getAverage(timesClone, true));
-                delete timesClone[day];
-            });
-
-            return averages.reverse();
-        },
-        getTimes(times) {
-            const points = [];
-
-            _.forEach( this.chartDays.slice(-10), day => {
-                if ( times[day] ) {
-                    points.push(this.toSeconds(times[day]));
-                } else {
-                    points.push(null);
-                }
-            });
-
-            return points;
         },
     },
 }
@@ -355,5 +304,25 @@ $cell-width: 70px;
 
 .chart-wrap {
     padding: 2rem 1rem;
+}
+
+.btn-charts {
+    display: block;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 3px;
+    text-decoration: none;
+    background: #7f87b2;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: .5px;
+    transition: .1s;
+
+    &:hover,
+    &:focus {
+        opacity: .9;
+    }
 }
 </style>
