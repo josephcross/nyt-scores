@@ -19,10 +19,10 @@
                         </th>
                     </thead>
                     <tbody>
-                        <tr v-for="(boy, bi) in boys" :key="`boy-row-${bi}`">
-                            <td v-for="(day, i) in days" :key="`time-${i}-${bi}`" :class="{'slowest': isSlowest(day, getTime(day, bi))}" class="time">
-                                {{ getTime(day, bi) }}
-                                <svg v-if="isFastest(day, getTime(day, bi))" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="medal" class="svg-inline--fa fa-medal fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M223.75 130.75L154.62 15.54A31.997 31.997 0 0 0 127.18 0H16.03C3.08 0-4.5 14.57 2.92 25.18l111.27 158.96c29.72-27.77 67.52-46.83 109.56-53.39zM495.97 0H384.82c-11.24 0-21.66 5.9-27.44 15.54l-69.13 115.21c42.04 6.56 79.84 25.62 109.56 53.38L509.08 25.18C516.5 14.57 508.92 0 495.97 0zM256 160c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm92.52 157.26l-37.93 36.96 8.97 52.22c1.6 9.36-8.26 16.51-16.65 12.09L256 393.88l-46.9 24.65c-8.4 4.45-18.25-2.74-16.65-12.09l8.97-52.22-37.93-36.96c-6.82-6.64-3.05-18.23 6.35-19.59l52.43-7.64 23.43-47.52c2.11-4.28 6.19-6.39 10.28-6.39 4.11 0 8.22 2.14 10.33 6.39l23.43 47.52 52.43 7.64c9.4 1.36 13.17 12.95 6.35 19.59z"></path></svg>
+                        <tr v-for="(boy, boyIndex) in boys" :key="`boy-row-${boyIndex}`">
+                            <td v-for="(day, dayIndex) in days" :key="`time-${dayIndex}-${boyIndex}`"  :class="{'slowest': isSlowest(dayIndex, getTime(dayIndex, boyIndex))}" class="time">
+                                {{ getTime(dayIndex, boyIndex) }}
+                                <svg v-if="isFastest(dayIndex, getTime(dayIndex, boyIndex))" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="medal" class="svg-inline--fa fa-medal fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M223.75 130.75L154.62 15.54A31.997 31.997 0 0 0 127.18 0H16.03C3.08 0-4.5 14.57 2.92 25.18l111.27 158.96c29.72-27.77 67.52-46.83 109.56-53.39zM495.97 0H384.82c-11.24 0-21.66 5.9-27.44 15.54l-69.13 115.21c42.04 6.56 79.84 25.62 109.56 53.38L509.08 25.18C516.5 14.57 508.92 0 495.97 0zM256 160c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm92.52 157.26l-37.93 36.96 8.97 52.22c1.6 9.36-8.26 16.51-16.65 12.09L256 393.88l-46.9 24.65c-8.4 4.45-18.25-2.74-16.65-12.09l8.97-52.22-37.93-36.96c-6.82-6.64-3.05-18.23 6.35-19.59l52.43-7.64 23.43-47.52c2.11-4.28 6.19-6.39 10.28-6.39 4.11 0 8.22 2.14 10.33 6.39l23.43 47.52 52.43 7.64c9.4 1.36 13.17 12.95 6.35 19.59z"></path></svg>
                             </td>
                         </tr>
                     </tbody>
@@ -31,10 +31,8 @@
         </div>
         <!-- <router-link :to="{ name: 'Charts' }" class="btn btn-charts">View Charts</router-link> -->
         <div class="chart-wrap">
-            <h2>Average (all-time)</h2>
-            <AvgChart :chart-data="chartDataAvg"></AvgChart>
-            <!-- <h2>Average (past 30 days)</h2>
-            <AvgChart :chart-data="chartDataAvg30"></AvgChart> -->
+            <h2>Average (past 30 days)</h2>
+            <AvgChart :chart-data="chartDataAvg30"></AvgChart>
             <h2>Puzzle times (past 10 days)</h2>
             <AvgChart :chart-data="chartDataTimes10"></AvgChart>
         </div>
@@ -50,10 +48,16 @@ export default {
     name: 'Home',
     mixins: [helpers],
     components: { AvgChart },
+    data() {
+        return {
+          jAverage: [],
+      };
+    },
+    created() {
+    },
     computed: {
-        datasetsAvgAll() {
+        datasetsAvg30() {
             const data = [];
-
 
             _.forEach( this.boys, boy => {
                 const obj = {
@@ -61,7 +65,7 @@ export default {
                     borderColor: this.colors[boy.name],
                     pointRadius: 0,
                     fill: false,
-                    data: this.getAverages(boy.times),
+                    data: this.calcAverages(boy.name).slice(-30),
                 }
                 data.push(obj);
             });
@@ -77,22 +81,24 @@ export default {
                     borderColor: this.colors[boy.name],
                     pointRadius: 3,
                     fill: false,
-                    data: this.getTimes(boy.times),
+                    data: this.getTenMostRecentTimes(boy.name),
                 }
                 data.push(obj);
             });
 
             return data;
         },
-        chartDataAvg() {
+        chartDataAvg30() {
+            const days = _.clone(this.chartDays);
             return {
-                labels: this.chartDays,
-                datasets: this.datasetsAvgAll,
+                labels: days.slice(-30),
+                datasets: this.datasetsAvg30,
             }
         },
         chartDataTimes10() {
+            const days = _.clone(this.chartDays);
             return {
-                labels: this.chartDays.slice(-10),
+                labels: days.slice(-10),
                 datasets: this.datasetTimes10,
             }
         },
@@ -101,12 +107,16 @@ export default {
         reload() {
             window.location.reload();
         },
-        getTime(day, boyIndex) {
-            const date = day.split(' ')[1];
-            return this.boys[boyIndex].times[date] ? this.boys[boyIndex].times[date] : '-';
+        getTime(dayIndex, boyIndex) {
+            const times = this.boys[boyIndex].times;
+
+            const timeObj = times[dayIndex];
+            const key = Object.keys(timeObj)[0];
+            const time = timeObj[key]
+
+            return time ? time : '-';
         },
-        isFastest(day, time) {
-            const date = day.split(' ')[1];
+        isFastest(dayIndex, time) {
             let fastest = true;
 
             if ( time === '-' || !time ) {
@@ -114,16 +124,18 @@ export default {
             }
 
             for (var i = 0; i < this.boys.length; i++) {
-                const thisBoysTime = this.toSeconds(this.boys[i].times[date]);
-                if ( thisBoysTime < this.toSeconds(time) ) {
+                const timeObj = this.boys[i].times[dayIndex];
+                const key = Object.keys(timeObj)[0];
+                const thisBoysTime = timeObj[key];
+
+                if ( this.toSeconds(thisBoysTime) < this.toSeconds(time) ) {
                     fastest = false;
                 }
             }
 
             return fastest;
         },
-        isSlowest(day, time) {
-            const date = day.split(' ')[1];
+        isSlowest(dayIndex, time) {
             let slowest = true;
 
             if ( time === '-' ) {
@@ -131,8 +143,11 @@ export default {
             }
 
             for (var i = 0; i < this.boys.length; i++) {
-                const thisBoysTime = this.toSeconds(this.boys[i].times[date]);
-                if ( thisBoysTime > this.toSeconds(time) ) {
+                const timeObj = this.boys[i].times[dayIndex];
+                const key = Object.keys(timeObj)[0];
+                const thisBoysTime = timeObj[key];
+
+                if ( this.toSeconds(thisBoysTime) > this.toSeconds(time) ) {
                     slowest = false;
                 }
             }
