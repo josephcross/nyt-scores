@@ -36,6 +36,7 @@
             <h2>Puzzle times (past 10 days)</h2>
             <AvgChart :chart-data="chartDataTimes10"></AvgChart>
         </div>
+        <button type="button" @click.prevent="showHidden = true" class="reveal-hidden">show hidden times</button>
     </div>
 </template>
 
@@ -106,6 +107,9 @@ export default {
     methods: {
         reload() {
             window.location.reload();
+        },
+        showHiddenTimes() {
+            this.$store.commit('showHiddenTimes');
         },
         getTime(dayIndex, boyIndex) {
             const times = this.boys[boyIndex].times;
@@ -339,5 +343,13 @@ $cell-width: 70px;
     &:focus {
         opacity: .9;
     }
+}
+.reveal-hidden {
+    width: 57px;
+    height: 70px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
 }
 </style>
