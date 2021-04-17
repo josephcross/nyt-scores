@@ -18,6 +18,10 @@ export default new Vuex.Store({
         },
         times: {
             joseph: [
+                { '4/16': '0:39' },
+                { '4/15': '0:25' },
+                { '4/14': '1:28' },
+                { '4/13': '0:31' },
                 { '4/12': '0:29' },
                 { '4/11': '0:34' },
                 { '4/10': '2:11' },
@@ -290,6 +294,10 @@ export default new Vuex.Store({
                 { '7/17': '2:22' },
             ],
             brian: [
+                { '4/16': '0:56' },
+                { '4/15': '0:54' },
+                { '4/14': '4:00' },
+                { '4/13': '1:06' },
                 { '4/12': '1:08' },
                 { '4/11': '' },
                 { '4/10': '3:15' },
@@ -562,6 +570,10 @@ export default new Vuex.Store({
                 { '7/17': '01:06' },
             ],
             josh: [
+                { '4/16': '0:29' },
+                { '4/15': '0:34' },
+                { '4/14': '1:05' },
+                { '4/13': '0:51' },
                 { '4/12': '0:50' },
                 { '4/11': '0:40' },
                 { '4/10': '2:18' },
@@ -834,6 +846,10 @@ export default new Vuex.Store({
                 { '7/17': '0:59' },
             ],
             dylan: [
+                { '4/16': '2:22' },
+                { '4/15': '1:49' },
+                { '4/14': '1:27' },
+                { '4/13': '1:43' },
                 { '4/12': '1:36' },
                 { '4/11': '2:10' },
                 { '4/10': '5:08' },
@@ -1106,6 +1122,10 @@ export default new Vuex.Store({
                 { '7/17': '2:22' },
             ],
             mark: [
+                { '4/16': '' },
+                { '4/15': '1:28' },
+                { '4/14': '' },
+                { '4/13': '' },
                 { '4/12': '' },
                 { '4/11': '' },
                 { '4/10': '5:08' },
@@ -1378,6 +1398,10 @@ export default new Vuex.Store({
                 { '7/17': '' },
             ],
             nick: [
+                { '4/16': '2:59' },
+                { '4/15': '' },
+                { '4/14': '0:46' },
+                { '4/13': '0:38' },
                 { '4/12': '1:06' },
                 { '4/11': '0:49' },
                 { '4/10': '2:28' },
@@ -1650,6 +1674,10 @@ export default new Vuex.Store({
                 { '7/17': '' },
             ],
             steve: [
+                { '4/16': '2:36' },
+                { '4/15': '0:49' },
+                { '4/14': '0:55' },
+                { '4/13': '0:54' },
                 { '4/12': '2:21' },
                 { '4/11': '' },
                 { '4/10': '2:39' },
@@ -1922,6 +1950,10 @@ export default new Vuex.Store({
                 { '7/17': '' },
             ],
             aaron: [
+                { '4/16': '2:24' },
+                { '4/15': '' },
+                { '4/14': '' },
+                { '4/13': '' },
                 { '4/12': '' },
                 { '4/11': '' },
                 { '4/10': '5:08' },
@@ -2194,6 +2226,10 @@ export default new Vuex.Store({
                 { '7/17': '' },
             ],
             md: [
+                { '4/16': '0:59' },
+                { '4/15': '0:59' },
+                { '4/14': '2:30' },
+                { '4/13': '1:22' },
                 { '4/12': '0:45' },
                 { '4/11': '0:39' },
                 { '4/10': '3:15' },
@@ -2474,3 +2510,24 @@ export default new Vuex.Store({
     getters: {
     },
 })
+
+
+var games = [];
+var rows = document.querySelectorAll('.sportsbook-table__body tr');
+
+for (var i = 0; i < rows.length; i++) {
+    var odds = rows[i].querySelector('td:last-child .sportsbook-odds') ? rows[i].querySelector('td:last-child .sportsbook-odds').innerText.replace('+', '') : 0;
+    var name = rows[i].querySelector('.event-cell__name').innerHTML.split('<')[0];
+    var shortName = name.substring(name.indexOf(' ') + 1);
+
+    // New game
+    if ( i % 2 !== 1 ) {
+        games.push({
+            team: shortName,
+            odds: [ odds ]
+        });
+    } else {
+        games[games.length - 1].opp = shortName;
+        games[games.length - 1].odds.push( odds );
+    }
+}
