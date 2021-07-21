@@ -4,7 +4,7 @@ import _ from 'lodash';
 const helpers = {
     data() {
         return {
-            showHidden: false,
+            showHidden: true,
             hiddenNames: ['md'],
         };
     },
